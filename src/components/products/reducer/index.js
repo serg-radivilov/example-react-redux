@@ -2,21 +2,21 @@
 import CONSTANTS from "../constants";
 
 const initialState = {
-    // fields for adding user
+    // fields for adding product
     fields: {
         id:      null,
-        name:    '',
-        surname: '',
-        age:     ''
+        name:  '',
+        type:  '',
+        price: ''
     },
-    // users list
+    // products list
     list: []
 };
 
-export default function usersListReducer (state = initialState, action) {
+export default function productsListReducer (state = initialState, action) {
     switch (action.type) {
 
-    // ADDING USER FIELDS
+    // ADDING PRODUCTS FIELDS
     case CONSTANTS.ACTIONS.SET_FIELD:
         return {
             ...state,
@@ -33,32 +33,33 @@ export default function usersListReducer (state = initialState, action) {
         };
 
 
-    // USERS LIST
-    case CONSTANTS.ACTIONS.ADD_USER:
+    // PRODUCTS LIST
+    case CONSTANTS.ACTIONS.ADD_PRODUCT:
         return {
             ...state,
             list: [
                 ...state.list,
                 {
-                    id:      action.payload.id,
-                    name:    action.payload.name,
-                    surname: action.payload.surname,
-                    age:     action.payload.age
+                    id:    action.payload.id,
+                    name:  action.payload.name,
+                    type:  action.payload.type,
+                    price: action.payload.price
                 }
             ]
         };
 
-    case CONSTANTS.ACTIONS.SET_USERS:
+    case CONSTANTS.ACTIONS.SET_PRODUCTS:
         return {
             ...state,
             list: action.payload.array
         };
 
-    case CONSTANTS.ACTIONS.CLEAR_USERS:
+    case CONSTANTS.ACTIONS.CLEAR_PRODUCTS:
         return {
             ...state,
             list: initialState.list
         };
+
 
     // DEFAULT
     default:

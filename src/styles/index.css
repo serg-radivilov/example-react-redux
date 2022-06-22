@@ -2,62 +2,64 @@
 body {
     margin: 0;
     background-color: #fff0e9;
+    font-family: "FontAwesome", sans-serif;
 }
 
 
 /* wrapper */
 .container {
-    width: 100%;
     margin: auto;
 }
 .container > .header {
     display: flex;
     align-items: center;
-    width: 100%;
     height: 80px;
     padding: 0 20px;
     background-color: #fff;
     box-shadow: 0 0 100px 2px #0e2033;
-    font-size: 60px;
+    font-size: 55px;
     font-weight: bold;
     color: #0e2033;
 }
 .container > .header > .length {
-    font-size: 30px;
-    margin-top: 22px;
+    font-size: 22px;
     margin-left: 26px;
+    line-height: 1.5;
     color: #999;
 }
 .container > .components {
-    width: calc(100% - 240px);
-    min-height: 200px;
-    background-color: #fff;
-    margin: 100px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 30px 2px rgba(14, 32, 51, 0.4);
+    margin: 50px 100px;
 }
 
 
 /* components */
+.component {
+    width: calc(100% - 40px);
+    min-height: 200px;
+    background-color: #fff;
+    margin: 50px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px 2px rgba(14, 32, 51, 0.4);
+}
 .component > .header {
     border-bottom: 1px solid #333;
     font-size: 28px;
     font-weight: bold;
 }
 /* form */
-.component > form {
+.component > .form {
     display: flex;
+    justify-content: space-between;
     margin: 10px 0;
     padding-bottom: 10px;
     border-bottom: 1px solid #333;
 }
-.component > form > div {
+.component > .form > div {
     position: relative;
-    width: calc(25% - 20px);
-    margin-right: 20px;
+    width: 23%;
 }
-.component > form > div > input {
+.component > .form > div > input {
     width: 100%;
     height: 30px;
     margin-top: 15px;
@@ -66,17 +68,25 @@ body {
     outline: none;
     font-size: 20px;
 }
-.component > form > div > span {
+.component > .form > div > span {
     position: absolute;
     left: 0;
     top: 0;
     opacity: 0.6;
 }
-.component > form > button {
-    width: 25%;
+.component > .form > button {
+    width: 13%;
+    border: 1px solid #767676;
+    border-radius: 2px;
     font-size: 16px;
     font-weight: bold;
+    transition: all 0.1s ease;
+    cursor: pointer;
 }
+.component > .form > .btn-add       { background-color: #9eff9e; }
+.component > .form > .btn-add:hover { background-color: #87e587; }
+.component > .form > .btn-clear       { background-color: #ffd5d5; }
+.component > .form > .btn-clear:hover { background-color: #f1bebe;}
 /* list */
 .component > .list span {
     width: 30%;

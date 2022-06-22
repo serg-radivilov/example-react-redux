@@ -1,3 +1,5 @@
+/** NOTE - Initialization classic react application */
+
 // libraries
 import React    from 'react';
 import ReactDOM from 'react-dom/client';

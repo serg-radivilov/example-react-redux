@@ -1,5 +1,8 @@
+/** NOTE - This component use redux from connect (mapStateToProps, mapDispatchToProps) for get store and dispatches */
+
 // libraries
 import React       from "react";
+import PropTypes   from "prop-types";
 import { connect } from "react-redux";
 import { v4 }      from "uuid";
 
@@ -13,19 +16,20 @@ import { addUserAction } from "./actions";
 
 // redux state
 const mapStateToProps = ({ usersState }) => ({
-    // adding
-    addingUser: usersState.addingUser,
-    // list
-    list: usersState.list
+    // adding user
+    fields: usersState.fields,
+    // users list
+    list:   usersState.list
 });
 // redux dispatch
 const mapDispatchToProps = {
-    // adding
-    setAddingField:  setFieldValue(CONSTANTS.ACTIONS.SET_ADDING_FIELD),
-    clearAddingUser: emptyAction(CONSTANTS.ACTIONS.CLEAR_ADDING_FIELD),
-    // list
-    addUser:         addUserAction(CONSTANTS.ACTIONS.ADD_USER),
-    setUsersList:    setArrayAction(CONSTANTS.ACTIONS.SET_USERS_LIST)
+    // adding user
+    setField:    setFieldValue(CONSTANTS.ACTIONS.SET_FIELD),
+    clearFields: emptyAction(CONSTANTS.ACTIONS.CLEAR_FIELDS),
+    // users list
+    addUser:     addUserAction(CONSTANTS.ACTIONS.ADD_USER),
+    setUsers:    setArrayAction(CONSTANTS.ACTIONS.SET_USERS),
+    clearUsers:  emptyAction(CONSTANTS.ACTIONS.CLEAR_USERS)
 };
 
 
@@ -34,64 +38,69 @@ const Users = (props) => {
 
     /** Props */
     const {
-        // adding
-        addingUser,
-        setAddingField,
-        clearAddingUser,
-        // list
+        // adding user
+        fields,
+        setField,
+        clearFields,
+        // users list
         list,
         addUser,
-        setUsersList
+        setUsers,
+        clearUsers
     } = props;
 
 
     /** Events */
-    // set adding field
-    const _setAddingField = (field) => ({ target }) => setAddingField({ field, value: target.value });
+    // set editable field for adding user
+    const _setEditableField = (field) => ({ target }) => setField({ field, value: target.value });
 
-    // submit form
-    const _submitForm = (event) => {
-        event.preventDefault();
-
+    // event for add user by filled fields
+    const _onAddUser = () => {
         // add user
         addUser({
-            ...addingUser,
+            ...fields,
             id: v4() // set new id for creating user
         });
 
-        // clear adding user
-        clearAddingUser();
+        // clear fields
+        clearFields();
     };
 
-    // delete user
-    const _onDelete = (id) => {
+    // event for clear all users from list
+    const _onClearUsers = () => clearUsers();
+
+    // event for delete user
+    const _onDeleteUser = (id) => {
+        // filter users list by id for delete
         const updatedList = list.filter((user) => !(user.id === id));
 
-        setUsersList(updatedList);
+        // set users list
+        setUsers(updatedList);
     };
 
 
     /** Render */
-    // render form
+    // render form for adding user by filled fields
     const _renderForm = () => (
-        <form onSubmit={ _submitForm }>
+        <div className="form">
             <div>
                 <span>name</span>
-                <input type="text" value={ addingUser.name }    onChange={ _setAddingField('name') }/>
+                <input type="text" value={ fields.name }    onChange={ _setEditableField('name') }/>
             </div>
             <div>
                 <span>surname</span>
-                <input type="text" value={ addingUser.surname } onChange={ _setAddingField('surname') }/>
+                <input type="text" value={ fields.surname } onChange={ _setEditableField('surname') }/>
             </div>
             <div>
                 <span>age</span>
-                <input type="text" value={ addingUser.age }     onChange={ _setAddingField('age') }/>
+                <input type="text" value={ fields.age }     onChange={ _setEditableField('age') }/>
             </div>
-            <button>Add</button>
-        </form>
+            <button className="btn-add"   onClick={ _onAddUser }   >Add user</button>
+            <button className="btn-clear" onClick={ _onClearUsers }>Clear users</button>
+        </div>
     );
 
-    // render list
+    // render users list
     const _renderList = () => (
         <div className="list">
             <div className="head">
@@ -100,12 +109,12 @@ const Users = (props) => {
                 <span>Age</span>
             </div>
             <div className="body">
-                { list.map((user) => (
-                    <div key={ user.id } className="item">
-                        <span>{ user.name }</span>
-                        <span>{ user.surname }</span>
-                        <span>{ user.age }</span>
-                        <button onClick={ () => _onDelete(user.id) }>Delete</button>
+                { list.map(({ id, name, surname, age }) => (
+                    <div key={ id } className="item">
+                        <span>{ name }</span>
+                        <span>{ surname }</span>
+                        <span>{ age }</span>
+                        <button onClick={ () => _onDeleteUser(id) }>Delete</button>
                     </div>
                 )) }
             </div>
@@ -122,6 +131,18 @@ const Users = (props) => {
 
         </div>
     );
+};
+
+Users.prototype = {
+    // adding user
+    fields:      PropTypes.object,
+    setField:    PropTypes.func,
+    clearFields: PropTypes.func,
+    // users list
+    list:        PropTypes.array,
+    addUser:     PropTypes.func,
+    setUsers:    PropTypes.func,
+    clearUsers:  PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
